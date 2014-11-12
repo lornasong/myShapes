@@ -58,7 +58,7 @@ public abstract class Shape {
 	 * Returns the name of the shape by looking at the extended class name
 	 */
 	public String getShapeName() {
-		String name = getClass().getSimpleName();
+		String name = getClass().getSimpleName().toLowerCase();
 		return name;
 	}
 	

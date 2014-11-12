@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.reflect.*;
+import org.apache.commons.lang3.StringUtils;
 
 public class Controller {
 
@@ -35,7 +36,7 @@ public class Controller {
 		ShapeColor color = getColor(reader);
 
 		Shape newShape = createShape(reader, shape, color, shapeMap);
-
+		System.out.println(newShape.toString());
 		System.out.println();
 	}
 
@@ -108,19 +109,26 @@ public class Controller {
 		double param = readParameter(reader);
 		
 		try {
+			shape = "Shapes." + StringUtils.capitalize(shape);
 			Class<?> newShape = Class.forName(shape);
-			Class[] parameters = new Class[] {ShapeColor.class, int.class, double.class};
-			Constructor constructor = newShape.asSubclass(Shape.class).getConstructors(parameters);
-			
-			//Constructor constructor = newShape.getConstructor(ShapeColor.class, double.class);
-			//Object helloshape = constructor.newInstance(color, param);
-			return null;
+			Class[] parameters = new Class[] {ShapeColor.class, double.class};
+			Constructor<?> constructor = newShape.asSubclass(Shape.class).getConstructor(parameters);
+			Object objShape = constructor.newInstance(color, param);
+			return (Shape) objShape;
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (InstantiationException e){
 			e.printStackTrace();
 		} catch (IllegalAccessException e){
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
 		
@@ -221,4 +229,6 @@ public class Controller {
 
 		return 0;
 	}
+	
+	
 }
