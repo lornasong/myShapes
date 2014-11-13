@@ -2,11 +2,13 @@ package Shapes;
 
 public class Triangle extends Shape {
 
-	private double base;
-	private double height;
+	private final double base;
+	private final double height;
 	
 	public Triangle(ShapeColor color, double base, double height) {
 		super(color, 3);
+		this.base = base;
+		this.height = height;
 	}
 
 	@Override

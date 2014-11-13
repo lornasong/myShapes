@@ -91,7 +91,7 @@ public class Controller {
 
 		// Shapes that require two parameters
 		if (shape.equals("rectangle") || shape.equals("triangle")) {
-			return null;
+			return createTwoParameterShape(reader, shape, color, shapeMap);
 		}
 		// Shapes that require one parameter
 		else {
@@ -105,15 +105,57 @@ public class Controller {
 	private Shape createOneParameterShape(BufferedReader reader, String shape,
 			ShapeColor color, Map<String, ArrayList<String>> shapeMap) {
 		
+		//Ask for one parameter
 		System.out.println(shapeMap.get(shape).get(0) + ":");
 		double param = readParameter(reader);
 		
+		//Create class
 		try {
 			shape = "Shapes." + StringUtils.capitalize(shape);
 			Class<?> newShape = Class.forName(shape);
 			Class[] parameters = new Class[] {ShapeColor.class, double.class};
 			Constructor<?> constructor = newShape.asSubclass(Shape.class).getConstructor(parameters);
 			Object objShape = constructor.newInstance(color, param);
+			return (Shape) objShape;
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e){
+			e.printStackTrace();
+		} catch (IllegalAccessException e){
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Returns user's shape for only shapes that require TWO area parameters to construct
+	 */
+	private Shape createTwoParameterShape(BufferedReader reader, String shape,
+			ShapeColor color, Map<String, ArrayList<String>> shapeMap) {
+		
+		//Ask for 2 parameters
+		System.out.println(shapeMap.get(shape).get(0) + ":");
+		double param1 = readParameter(reader);
+		System.out.println(shapeMap.get(shape).get(1) + ":");
+		double param2 = readParameter(reader);
+		
+		//Create class
+		try {
+			shape = "Shapes." + StringUtils.capitalize(shape);
+			Class<?> newShape = Class.forName(shape);
+			Class[] parameters = new Class[] {ShapeColor.class, double.class, double.class};
+			Constructor<?> constructor = newShape.asSubclass(Shape.class).getConstructor(parameters);
+			Object objShape = constructor.newInstance(color, param1, param2);
 			return (Shape) objShape;
 			
 		} catch (ClassNotFoundException e) {
@@ -211,24 +253,5 @@ public class Controller {
 
 		return 0;
 	}
-
-	/**
-	 * Uses buffered reader to get user choice Returns
-	 */
-	private double getUserInput(BufferedReader reader) {
-
-		try {
-			int userOption = Integer.parseInt(reader.readLine());
-			return userOption;
-		} catch (NumberFormatException nfe) {
-			System.out.println("Error: please re-enter a valid choice");
-			return getUserInput(reader);
-		} catch (IOException e) {
-			System.out.println("Error occurred");
-		}
-
-		return 0;
-	}
-	
 	
 }
