@@ -1,5 +1,5 @@
 package Shapes;
-
+//hashmap use pretty common. arraylist also.
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -45,7 +45,8 @@ public class Controller {
 	 * class name in lower case. Value is an arraylist of all the parameters
 	 * needed to calculate area.
 	 */
-	private Map<String, ArrayList<String>> fillShapeMap(
+	//TODO can be an array not an arraylist
+	private Map<String, ArrayList<String>> fillShapeMap(//TODO make list not array list
 			Map<String, ArrayList<String>> shapeMap) {
 
 		shapeMap.put("circle", new ArrayList<String>(Arrays.asList("radius")));
@@ -54,7 +55,16 @@ public class Controller {
 		shapeMap.put("square", new ArrayList<String>(Arrays.asList("side")));
 		shapeMap.put("triangle",
 				new ArrayList<String>(Arrays.asList("base", "height")));
-		return shapeMap;
+		return shapeMap; //don't need to return. shapemap points to reference in object in heap. heap is changing
+		//ints (e.g.) are immutable. int is in stack. integer is in heap
+		//Integer foo = 1. Integer boo = 1. then foo == bar. (Integers built at beginning of JVM running) 
+		//Integer foo = new Integer (1) and Integer bar = new Integer (1), then foo != bar
+		//runtime vs. compiler time
+		//auto-boxing (int, Integer, float, Float, etc)
+		//Integer foo = 1; int bar = 1 then foo == bar. foo get's un auto boxes
+		//Void and void can autobox
+		//TODO make void
+		//two pointers to the same heap when you have
 
 	}
 
@@ -99,6 +109,10 @@ public class Controller {
 		}
 	}
 
+	
+	//TODO: make a kernel method.to pass the parameters
+	//Normally don't use reflection. use it in special cases.
+	//Use switch statement
 	/**
 	 * Returns user's shape for only shapes that require one area parameter to construct
 	 */
@@ -118,6 +132,7 @@ public class Controller {
 			Object objShape = constructor.newInstance(color, param);
 			return (Shape) objShape;
 			
+			//you can use catch(Exception e)
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (InstantiationException e){
@@ -203,7 +218,7 @@ public class Controller {
 	private ShapeColor getColor(BufferedReader reader) {
 
 		String userInput = readString(reader);
-
+		//TODO move into color enum
 		// Check if userInput is valid color selection in ShapeColor
 		for (ShapeColor shape : ShapeColor.values()) {
 			if (userInput.equals(shape.getColorName())) {
