@@ -12,7 +12,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class ControllerTest {
-
+//Difficult to test UI
+//Better to test entities
 	private Controller controller;
 	private BufferedReader reader;
 
